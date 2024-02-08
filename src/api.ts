@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { extract_from_html } from "./utils/extracter";
+import { crawl } from "./utils/crawler";
 
 export const app = express();
 
@@ -25,23 +25,22 @@ api.get("/html", async (req, res) => {
   const proxyUrl = req.query.url; // get a query param value (?proxyUrl=...)
 
   if (!(typeof proxyUrl === "string")) {
-    return new Response("Bad request: Missing `url` query param", {
-      status: 400,
-    });
+    res.status(400).send({ message: "Invalid query param" });
+    return;
   }
 
-  // make subrequests with the global `fetch()` function
-  let res1 = await fetch(proxyUrl);
+  try {
+    let article = await crawl(proxyUrl);
 
-  const html = await res1.text();
-
-  let article = await extract_from_html(html, proxyUrl);
-
-  res.status(200).send({
-    title: article.title,
-    markdown: article.markdown,
-    excerpt: article.excerpt,
-  });
+    res.status(200).send({
+      title: article.title,
+      markdown: article.markdown,
+      excerpt: article.excerpt,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "Failed to crawl" });
+  }
 
   return undefined;
 });
