@@ -1,30 +1,30 @@
-# ExpressJS API Example
+# GPT APIs
 
-This example starts an [ExpressJS](https://expressjs.com/) server written in [TypeScript](https://www.typescriptlang.org/).
-
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/n_2mnn?referralCode=matt)
+Build APIs for GPT
 
 ## ✨ Features
 
-- Express
-- TypeScript
+- URL to Markdown
 
 ## 💁‍♀️ How to use
 
-- Install dependencies `yarn`
+- Install dependencies `npm i`
+
+## Test from local
+
+```
+$ npm run dev
+```
+
+`http://localhost:3333/api/url2md?url=https://baoyu.io`
+
+## Deploy to production
+
+### Railway
+
 - Connect to your Railway project `railway link`
 - Start the development server `railway run yarn dev`
 
-## 📝 Notes
+### Vercel
 
-The server started simply returns a healthcheck `status: "ok"` payload in JSON. The server code is located in `src/index.ts`.
-
-A versioned API route is available in `src/api.ts` and example function `hello` at `/api/v1/hello`.
-
-## URL to Markdown
-
-`/api/url2md?url=https://baoyu.io/blog/prompt-engineering/tutor-me-prompt`
-
-## 👏 Thanks
-
-- [Faraz Patankar](https://github.com/FarazPatankar) / Railway team for the [original template](https://github.com/railwayapp-templates/expressjs)
+[Deploying to Vercel](https://vercel.com/docs/deployments/overview)
