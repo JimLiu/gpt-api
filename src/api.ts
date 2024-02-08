@@ -34,7 +34,7 @@ api.get("/html", async (req, res) => {
 
     res.status(200).send({
       title: article.title,
-      markdown: article.markdown,
+      content: article.markdown,
       excerpt: article.excerpt,
     });
   } catch (err) {
