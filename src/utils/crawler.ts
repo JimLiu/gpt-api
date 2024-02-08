@@ -15,6 +15,7 @@ export async function crawl(url: string, headless: boolean = true) {
   try {
     const browser = await puppeteer.launch({
       headless,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
     const page = await browser.newPage();
     await page.setUserAgent(
