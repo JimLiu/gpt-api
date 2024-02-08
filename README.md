@@ -21,6 +21,10 @@ The server started simply returns a healthcheck `status: "ok"` payload in JSON. 
 
 A versioned API route is available in `src/api.ts` and example function `hello` at `/api/v1/hello`.
 
+## URL to Markdown
+
+`/html?url=https://baoyu.io/blog/prompt-engineering/tutor-me-prompt`
+
 ## 👏 Thanks
 
 - [Faraz Patankar](https://github.com/FarazPatankar) / Railway team for the [original template](https://github.com/railwayapp-templates/expressjs)
