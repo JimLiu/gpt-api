@@ -1,6 +1,9 @@
-import puppeteer from "puppeteer";
+import puppeteer from "puppeteer-extra";
+import StealthPlugin from "puppeteer-extra-plugin-stealth";
 
 import { extract_from_html } from "./extracter";
+
+puppeteer.use(StealthPlugin());
 
 export async function crawl(url: string, headless: boolean = true) {
   let article = {
@@ -12,9 +15,11 @@ export async function crawl(url: string, headless: boolean = true) {
   try {
     const browser = await puppeteer.launch({
       headless,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
-    const [page] = await browser.pages();
+    const page = await browser.newPage();
+    await page.setUserAgent(
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
+    );
 
     await page.goto(url, { waitUntil: "networkidle0" });
 
