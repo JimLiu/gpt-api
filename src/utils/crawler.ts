@@ -2,6 +2,7 @@ import puppeteer from "puppeteer-extra";
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
 
 import { extract_from_html } from "./extracter";
+import { Browser } from "puppeteer";
 
 puppeteer.use(StealthPlugin());
 
@@ -12,8 +13,9 @@ export async function crawl(url: string, headless: boolean = true) {
     markdown: "",
     excerpt: "",
   };
+  let browser: Browser;
   try {
-    const browser = await puppeteer.launch({
+    browser = await puppeteer.launch({
       headless,
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
@@ -27,10 +29,11 @@ export async function crawl(url: string, headless: boolean = true) {
     const html = await page.content();
 
     article = await extract_from_html(html, url);
-
-    await browser.close();
   } catch (err) {
     console.error(err);
+    throw new Error("Failed to crawl");
+  } finally {
+    await browser?.close();
   }
 
   return article;
