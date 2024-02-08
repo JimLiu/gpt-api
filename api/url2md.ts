@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { crawl } from "../utils/crawler";
+import { isAuthed } from "../utils/auth";
 
 export default async function (req: VercelRequest, res: VercelResponse) {
   const { url } = req.query;
@@ -8,6 +9,12 @@ export default async function (req: VercelRequest, res: VercelResponse) {
 
   if (!urlStr) {
     return res.status(400).end(`No url provided`);
+  }
+
+  // get auth token from header
+  const authorization = req.headers.authorization;
+  if (!isAuthed(authorization)) {
+    return res.status(401).end("Unauthorized request");
   }
 
   try {

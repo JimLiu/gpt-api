@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { crawl } from "./utils/crawler";
+import { isAuthed } from "./utils/auth";
 
 export const app = express();
 
@@ -25,8 +26,13 @@ api.get("/url2md", async (req, res) => {
   const proxyUrl = req.query.url; // get a query param value (?url=...)
 
   if (!(typeof proxyUrl === "string")) {
-    res.status(400).send({ message: "Invalid query param" });
-    return;
+    return res.status(400).send({ message: "Invalid query param" });
+  }
+
+  // get auth token from header
+  const authorization = req.headers.authorization;
+  if (!isAuthed(authorization)) {
+    return res.status(401).end("Unauthorized request");
   }
 
   try {
