@@ -21,8 +21,8 @@ api.get("/hello", (req, res) => {
   res.status(200).send({ message: "hello world" });
 });
 
-api.get("/html", async (req, res) => {
-  const proxyUrl = req.query.url; // get a query param value (?proxyUrl=...)
+api.get("/url2md", async (req, res) => {
+  const proxyUrl = req.query.url; // get a query param value (?url=...)
 
   if (!(typeof proxyUrl === "string")) {
     res.status(400).send({ message: "Invalid query param" });

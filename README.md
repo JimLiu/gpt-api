@@ -23,7 +23,7 @@ A versioned API route is available in `src/api.ts` and example function `hello` 
 
 ## URL to Markdown
 
-`/html?url=https://baoyu.io/blog/prompt-engineering/tutor-me-prompt`
+`/api/url2md?url=https://baoyu.io/blog/prompt-engineering/tutor-me-prompt`
 
 ## 👏 Thanks
 
