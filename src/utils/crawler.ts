@@ -29,9 +29,6 @@ export async function crawl(url: string, headless: boolean = true) {
     const html = await page.content();
 
     article = await extract_from_html(html, url);
-
-    console.log(html);
-    console.log(article);
   } catch (err) {
     console.error(err);
     throw new Error("Failed to crawl");
