@@ -18,7 +18,7 @@ export async function crawl(url: string) {
     const page = await browser.newPage();
     await page.setUserAgent(defaultUserAgent);
 
-    await page.goto(url, { waitUntil: "load" });
+    await page.goto(url, { waitUntil: "networkidle0" });
 
     const html = await page.content();
     article = await extract_from_html(html, url);
