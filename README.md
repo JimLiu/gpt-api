@@ -91,3 +91,8 @@ Add a new action for you GPT, this is an example for you Schema:
   }
 }
 ```
+
+## Who is using this?
+
+- [科技文章翻译 GPT](https://chat.openai.com/g/g-uBhKUJJTl-ke-ji-wen-zhang-fan-yi)
+- [TweetReader GPT](https://chat.openai.com/g/g-jQyjBVVhg-tweetreader)

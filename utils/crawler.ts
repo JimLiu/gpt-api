@@ -1,9 +1,7 @@
 import type { Browser } from "puppeteer";
+import { KnownDevices } from "puppeteer";
 import { extract_from_html } from "./extracter";
 import { createBrowser } from "./puppeteer";
-
-const defaultUserAgent =
-  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36";
 
 export async function crawl(url: string) {
   let article = {
@@ -15,8 +13,10 @@ export async function crawl(url: string) {
   let browser: Browser | null = null;
   try {
     browser = await createBrowser();
+    const iPhone = KnownDevices["iPhone 13"];
     const page = await browser.newPage();
-    await page.setUserAgent(defaultUserAgent);
+    await page.setUserAgent(iPhone.userAgent);
+    await page.emulate(iPhone);
 
     await page.goto(url, { waitUntil: "networkidle0" });
 
