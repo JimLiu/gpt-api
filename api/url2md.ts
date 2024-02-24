@@ -2,6 +2,8 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { crawl } from "../utils/crawler";
 import { isAuthed } from "../utils/auth";
 
+export const maxDuration = 60;
+
 export default async function (req: VercelRequest, res: VercelResponse) {
   const { url } = req.query;
 
