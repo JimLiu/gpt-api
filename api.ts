@@ -1,9 +1,17 @@
 import express from "express";
 import cors from "cors";
+import type { PuppeteerLifeCycleEvent } from "puppeteer";
 import { crawl } from "./utils/crawler";
 import { isAuthed } from "./utils/auth";
 
 export const app = express();
+
+const validWaitUntilSet = new Set([
+  "load",
+  "domcontentloaded",
+  "networkidle0",
+  "networkidle2",
+]);
 
 app.use(cors({ origin: true }));
 
@@ -24,6 +32,13 @@ api.get("/hello", (req, res) => {
 
 api.get("/url2md", async (req, res) => {
   const proxyUrl = req.query.url; // get a query param value (?url=...)
+  let waitUntil: PuppeteerLifeCycleEvent = "networkidle0";
+  if (
+    typeof req.query.waitUntil === "string" &&
+    validWaitUntilSet.has(req.query.waitUntil)
+  ) {
+    waitUntil = req.query.waitUntil as PuppeteerLifeCycleEvent;
+  }
 
   if (!(typeof proxyUrl === "string")) {
     return res.status(400).send({ message: "Invalid query param" });
@@ -36,7 +51,7 @@ api.get("/url2md", async (req, res) => {
   }
 
   try {
-    let article = await crawl(proxyUrl);
+    let article = await crawl(proxyUrl, { waitUntil });
 
     res.status(200).send({
       title: article.title,

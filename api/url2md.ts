@@ -1,13 +1,25 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { crawl } from "../utils/crawler";
 import { isAuthed } from "../utils/auth";
+import type { PuppeteerLifeCycleEvent } from "puppeteer";
 
 export const maxDuration = 60;
 
+const validWaitUntilSet = new Set([
+  "load",
+  "domcontentloaded",
+  "networkidle0",
+  "networkidle2",
+]);
+
 export default async function (req: VercelRequest, res: VercelResponse) {
-  const { url } = req.query;
+  const { url, waitUntil } = req.query;
 
   let urlStr = Array.isArray(url) ? url[0] : url;
+  let waitUntilStr = "networkidle0";
+  if (typeof waitUntil === "string" && validWaitUntilSet.has(waitUntil)) {
+    waitUntilStr = waitUntil;
+  }
 
   if (!urlStr) {
     return res.status(400).end(`No url provided`);
@@ -20,7 +32,9 @@ export default async function (req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    let article = await crawl(urlStr);
+    let article = await crawl(urlStr, {
+      waitUntil: waitUntilStr as PuppeteerLifeCycleEvent,
+    });
 
     return res.status(200).send({
       title: article.title,

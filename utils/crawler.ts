@@ -1,9 +1,18 @@
-import type { Browser } from "puppeteer";
+import type { Browser, PuppeteerLifeCycleEvent } from "puppeteer";
 import { KnownDevices } from "puppeteer";
 import { extract_from_html } from "./extracter";
 import { createBrowser } from "./puppeteer";
 
-export async function crawl(url: string) {
+export async function crawl(
+  url: string,
+  options: {
+    timeout?: number;
+    waitUntil?: PuppeteerLifeCycleEvent | PuppeteerLifeCycleEvent[];
+  } = {
+    waitUntil: "networkidle0",
+    timeout: 60000,
+  }
+) {
   let article = {
     title: "",
     content: "",
@@ -18,7 +27,10 @@ export async function crawl(url: string) {
     await page.setUserAgent(iPhone.userAgent);
     await page.emulate(iPhone);
 
-    await page.goto(url, { waitUntil: "networkidle0" });
+    await page.goto(url, {
+      waitUntil: options.waitUntil,
+      timeout: options.timeout,
+    });
 
     const html = await page.content();
     article = await extract_from_html(html, url);
