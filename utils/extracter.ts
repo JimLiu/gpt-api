@@ -62,12 +62,16 @@ turndownService.addRule("strikethrough", {
 
 function extract_from_dom(dom: JSDOM) {
   let article = new Readability(dom.window.document, {
-    keepClasses: true,
+    keepClasses: false,
     debug: false,
-    charThreshold: 100,
+    // charThreshold: 100,
   }).parse();
 
   if (!article) {
+    console.log(
+      "Failed to parse article",
+      dom.window.document.documentElement.outerHTML
+    );
     throw new Error("Failed to parse article");
   }
   // remove HTML comments

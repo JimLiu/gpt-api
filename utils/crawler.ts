@@ -3,6 +3,20 @@ import { KnownDevices } from "puppeteer";
 import { extract_from_html } from "./extracter";
 import { createBrowser } from "./puppeteer";
 
+// TODO: Set cookie for each domain
+/**
+const setCookie = async (page: Page, cookie: string, url: string) => {
+  // parse cookie string
+  const cookies = cookie.split(";").map((pair) => {
+    const [name, value] = pair.split("=");
+    return { name: name.trim(), value: value.trim() };
+  });
+
+  // set cookies
+  await page.setCookie(...cookies.map((c) => ({ ...c, url })));
+};
+*/
+
 export async function crawl(
   url: string,
   options: {
